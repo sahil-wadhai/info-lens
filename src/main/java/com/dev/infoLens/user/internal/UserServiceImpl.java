@@ -23,7 +23,7 @@ import java.util.List;
 class UserServiceImpl implements UserService, AuthUserProviderService {
 
     private final UserRepository userRepository;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -47,7 +47,7 @@ class UserServiceImpl implements UserService, AuthUserProviderService {
 
     public UserResponseDTO saveUser(UserRequestDTO userRequest) {
 
-        //userRequest.setPassword( passwordEncoder.encode(userRequest.getPassword()) ) ;
+        userRequest.setPassword( passwordEncoder.encode(userRequest.getPassword()) ) ;
         User user = UserMapper.toEntity(userRequest);
 
         if (userRepository.existsByUsername(user.getUsername())) {

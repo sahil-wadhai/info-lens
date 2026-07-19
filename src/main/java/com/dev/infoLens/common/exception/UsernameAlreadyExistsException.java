@@ -1,4 +1,4 @@
-package com.dev.daySnap.common.exception;
+package com.dev.infoLens.common.exception;
 
 public class UsernameAlreadyExistsException extends RuntimeException {
     public UsernameAlreadyExistsException(String message) {

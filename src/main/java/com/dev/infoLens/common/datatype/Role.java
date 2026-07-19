@@ -1,4 +1,7 @@
 package com.dev.infoLens.common.datatype;
 
-public class Role {
+public enum Role {
+    USER,
+    ADMIN
 }
+

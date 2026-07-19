@@ -1,0 +1,11 @@
+spring:
+
+  datasource:
+    url: jdbc:postgresql://postgres_db:5432/infolens
+    username: postgres
+    password: 's@123'
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false

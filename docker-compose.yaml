@@ -1,0 +1,59 @@
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: s@123
+      POSTGRES_DB: infolens
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - postgres_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d infolens"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer_ui:
+    image: adminer:latest
+    container_name: adminer_ui
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - postgres_network
+
+  infolens:
+    #image: infolens:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: infolens
+    container_name: infolens
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - postgres_network
+    profiles:
+      - prod
+
+volumes:
+  postgres_data:
+
+networks:
+  postgres_network:
+
